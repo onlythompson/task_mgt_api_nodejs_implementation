@@ -20,8 +20,12 @@ import {
 } from '../../../application/use-cases';
 import { Category } from '../../../domain/task';
 import { CreateTaskSerializer, TaskListItemSerializer, TaskResponseSerializer, UpdateTaskSerializer } from '../../serializers/TaskSerializer';
+import { User } from '../../../domain/user';
 
-
+// Define a custom interface extending Express.Request
+interface AuthenticatedRequest extends Request {
+    user?: User;
+  }
 @injectable()
 export class TaskController {
     constructor(
@@ -48,7 +52,11 @@ export class TaskController {
      */
     async createTask(req: Request, res: Response): Promise<void> {
         try {
-            const userId = req.user.id;
+            const userId = req.user?.getId();
+            if (!userId) {
+                res.status(400).json({ message: 'User ID is missing' });
+                return;
+            }
             const category = new Category(req.body.category);
             const taskData = CreateTaskSerializer.deserialize(req.body, userId, category);
             const createdTask = await this.createTaskUseCase.execute(
@@ -151,7 +159,12 @@ export class TaskController {
      */
     async getUserTasks(req: Request, res: Response): Promise<void> {
         try {
-            const userId = req.user.id;
+            const userId = req.user?.getId();
+            if (!userId) {
+                res.status(400).json({ message: 'User ID is missing' });
+                return;
+            }
+
             const tasks = await this.getTasksByUserUseCase.execute(userId);
             res.json(TaskListItemSerializer.serializeMany(tasks));
         } catch (error) {
@@ -200,7 +213,12 @@ export class TaskController {
      */
     async getUserCategoryTasks(req: Request, res: Response): Promise<void> {
         try {
-            const userId = req.user.id;
+            const userId = req.user?.getId();
+            if (!userId) {
+                res.status(400).json({ message: 'User ID is missing' });
+                return;
+            }
+    
             const categoryName = req.params.category;
             const category = new Category(categoryName);
             const tasks = await this.getTasksByUserAndCategoryUseCase.execute(userId, category);

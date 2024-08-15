@@ -73,10 +73,10 @@ class Server {
     const retryConnection = async () => {
       try {
         // Connect to database
-        await mongoPersistenceConnection.connect();
+        // await mongoPersistenceConnection.connect();
 
         // Seed the database
-        await mongoPersistenceConnection.seedDatabase();
+        // await mongoPersistenceConnection.seedDatabase();
 
         // Start the server
         this.app.listen(APP_CONFIG.port, () => {

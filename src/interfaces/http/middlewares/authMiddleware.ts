@@ -3,18 +3,9 @@ import { injectable, inject } from 'tsyringe';
 import jwt from 'jsonwebtoken';
 import { AuthenticationService } from '../../../application/services/AuthenticationService';
 import { UserService } from '../../../domain/user/UserService';
-import { APP_CONFIG } from '../../../config/app';
 import logger from '../../../utility/shared/logger';
-import { User } from '../../../domain/user/User';
 
-// Extend the Express Request type to include a user property
-declare global {
-  namespace Express {
-    interface Request {
-      user?: User; // Replace 'any' with your User type
-    }
-  }
-}
+
 
 @injectable()
 export class AuthMiddleware {

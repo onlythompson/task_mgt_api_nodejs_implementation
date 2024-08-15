@@ -37,7 +37,7 @@ export class UserService {
       Date.now().toString(), // Simple ID generation, consider using UUID in production
       username,
       email,
-      this.hashPassword(password) // In a real app, use a proper password hashing function
+      password// In a real app, use a proper password hashing function
     );
     return this.userRepository.save(newUser);
   }
@@ -90,31 +90,4 @@ export class UserService {
     return this.userRepository.findByEmail(email);
   }
 
-
-  /**
-   * Authenticates a user.
-   * 
-   * @param {string} email - The email of the user.
-   * @param {string} password - The password of the user.
-   * @returns {Promise<User>} A promise that resolves to the authenticated User.
-   * @throws {Error} If authentication fails.
-   */
-  async authenticateUser(email: string, password: string): Promise<User> {
-    const user = await this.userRepository.findByEmail(email);
-    if (!user || !user.checkPassword(this.hashPassword(password))) {
-      throw new Error('Authentication failed');
-    }
-    return user;
-  }
-
-  /**
-   * Hashes a password.
-   * 
-   * @param {string} password - The password to hash.
-   * @returns {string} The hashed password.
-   */
-  private hashPassword(password: string): string {
-    // In a real application, use a proper password hashing function
-    return password;
-  }
 }

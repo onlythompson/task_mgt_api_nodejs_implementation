@@ -1,13 +1,12 @@
-import express from 'express';
+import express, { Router } from 'express';
 import { TaskController } from '../controllers/TaskController';
 import { validate } from '../middlewares/validationMiddleware';
-import { body, param } from 'express-validator';
-import { TaskStatus, TaskPriority } from '../../../domain/task';
-
 import { taskValidations } from '../validations/taskValidations';
+import { container } from 'tsyringe';
 
-export default function taskRoutes(taskController: TaskController) {
-  const router = express.Router();
+
+const router = Router();
+const taskController = container.resolve(TaskController);
 
   /**
    * @swagger
@@ -347,6 +346,6 @@ export default function taskRoutes(taskController: TaskController) {
       
   );
 
-  return router;
-}
+export default router;
+
 
