@@ -1,8 +1,9 @@
 import express, { Router } from 'express';
+import { container } from '../../../container'
 import { TaskController } from '../controllers/TaskController';
 import { validate } from '../middlewares/validationMiddleware';
 import { taskValidations } from '../validations/taskValidations';
-import { container } from 'tsyringe';
+
 
 
 const router = Router();

@@ -8,11 +8,14 @@
  */
 
 import { container } from "tsyringe";
-import { TaskRepository, TaskService, TaskFactory } from "./domain/task";
 import { UserRepository, UserService } from "./domain/user";
+import { TaskRepository, TaskService, TaskFactory } from "./domain/task";
 import { MongoDBTaskRepository, MongoDBUserRepository } from "./infrastructure/persistence/mongodb/repositories";
 import { AuthenticationService } from "./application/services/AuthenticationService";
 import { AuthMiddleware } from "./interfaces/http/middlewares/authMiddleware";
+import { CreateTaskUseCase, DeleteTaskUseCase, GetTaskByIdUseCase, GetTasksByCategoryUseCase, GetTasksByUserAndCategoryUseCase, GetTasksByUserUseCase, MarkTaskAsCompletedUseCase, UpdateTaskUseCase } from "./application/use-cases";
+import { TaskController } from "./interfaces/http/controllers/TaskController";
+import { AuthenticationController } from "./interfaces/http/controllers/AuthenticationController";
 
 /**
  * Configures the dependency injection container.
@@ -20,22 +23,32 @@ import { AuthMiddleware } from "./interfaces/http/middlewares/authMiddleware";
  */
 
 // Repositories
-container.register<TaskRepository>("TaskRepository", {
-  useClass: MongoDBTaskRepository
-});
-container.register<UserRepository>("UserRepository", {
-  useClass: MongoDBUserRepository
-});
-
-// Services
-container.registerSingleton<TaskService>(TaskService);
-container.registerSingleton<UserService>(UserService);
-
+container.registerSingleton<TaskRepository>("TaskRepository", MongoDBTaskRepository);
+container.register<UserRepository>("UserRepository", MongoDBUserRepository);
 // Factories
 container.registerSingleton<TaskFactory>(TaskFactory);
 
+// Services
+container.registerSingleton<UserService>(UserService);
+container.registerSingleton<TaskService>(TaskService);
+
 container.registerSingleton<AuthenticationService>(AuthenticationService)
 
+//Middlewares
 container.register<AuthMiddleware>(AuthMiddleware, { useClass: AuthMiddleware });
+
+
+container.registerSingleton<CreateTaskUseCase>(CreateTaskUseCase)
+container.registerSingleton<UpdateTaskUseCase>(UpdateTaskUseCase)
+container.registerSingleton<GetTaskByIdUseCase>(GetTaskByIdUseCase)
+container.registerSingleton<GetTasksByUserUseCase>(GetTasksByUserUseCase)
+container.registerSingleton<GetTasksByCategoryUseCase>(GetTasksByCategoryUseCase)
+container.registerSingleton<GetTasksByUserAndCategoryUseCase>(GetTasksByUserAndCategoryUseCase)
+container.registerSingleton<DeleteTaskUseCase>(DeleteTaskUseCase)
+container.registerSingleton<MarkTaskAsCompletedUseCase>(MarkTaskAsCompletedUseCase)
+
+container.registerSingleton<AuthenticationController>(AuthenticationController)
+container.registerSingleton<TaskController>(TaskController)
+
 
 export { container };

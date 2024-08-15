@@ -3,7 +3,6 @@ import express from 'express';
 import helmet from 'helmet';
 import compression from 'compression';
 import swaggerUi from 'swagger-ui-express';
-// import { container } from './container';
 import { APP_CONFIG } from './config/app';
 import {
   errorMiddleware,

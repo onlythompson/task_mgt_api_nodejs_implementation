@@ -1,15 +1,16 @@
-import express, { Router } from 'express';
+import express from 'express';
+import { container }  from '../../../container'
 import { AuthenticationController } from '../controllers/AuthenticationController';
 import { registerValidator, loginValidator, changePasswordValidator, tokenValidator } from '../validations/authValidations';
 import { validate } from '../middlewares/validationMiddleware';
-import { container } from 'tsyringe';
+
 
 /**
  * @openapi
  * components:
  *   schemas:
  *     User:
- *       type: object
+ *       type: objectS
  *       required:
  *         - id
  *         - username
@@ -40,7 +41,7 @@ import { container } from 'tsyringe';
  *       bearerFormat: JWT
  */
 
-const router = Router();
+const router = express.Router();
 const authController = container.resolve(AuthenticationController);
 
   /**

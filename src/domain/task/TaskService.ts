@@ -25,11 +25,11 @@ export class TaskService {
    * Creates an instance of TaskService.
    * 
    * @constructor
-   * @param {ITaskRepository} taskRepository - The task repository for data access.
+   * @param {TaskRepository} taskRepository - The task repository for data access.
    */
   constructor(
-    @inject("TaskRepository") private taskRepository: TaskRepository,
-    @inject(TaskFactory) private taskFactory: TaskFactory
+    @inject('TaskRepository') private taskRepository: TaskRepository,
+    @inject('TaskFactory') private taskFactory: TaskFactory
   ) { }
 
   /**

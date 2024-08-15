@@ -22,10 +22,7 @@ import { Category } from '../../../domain/task';
 import { CreateTaskSerializer, TaskListItemSerializer, TaskResponseSerializer, UpdateTaskSerializer } from '../../serializers/TaskSerializer';
 import { User } from '../../../domain/user';
 
-// Define a custom interface extending Express.Request
-interface AuthenticatedRequest extends Request {
-    user?: User;
-  }
+
 @injectable()
 export class TaskController {
     constructor(
@@ -52,7 +49,8 @@ export class TaskController {
      */
     async createTask(req: Request, res: Response): Promise<void> {
         try {
-            const userId = req.user?.getId();
+            // const userId = req.user?.getId();
+            const userId = (req as Request & { user?: User }).user?.getId();
             if (!userId) {
                 res.status(400).json({ message: 'User ID is missing' });
                 return;
@@ -159,7 +157,8 @@ export class TaskController {
      */
     async getUserTasks(req: Request, res: Response): Promise<void> {
         try {
-            const userId = req.user?.getId();
+            // const userId = req.user?.getId();
+            const userId = (req as Request & { user?: User }).user?.getId();
             if (!userId) {
                 res.status(400).json({ message: 'User ID is missing' });
                 return;
@@ -213,7 +212,8 @@ export class TaskController {
      */
     async getUserCategoryTasks(req: Request, res: Response): Promise<void> {
         try {
-            const userId = req.user?.getId();
+            // const userId = req.user?.getId();
+            const userId = (req as Request & { user?: User }).user?.getId();
             if (!userId) {
                 res.status(400).json({ message: 'User ID is missing' });
                 return;

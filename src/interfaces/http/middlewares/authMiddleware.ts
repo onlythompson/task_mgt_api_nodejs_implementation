@@ -4,6 +4,16 @@ import jwt from 'jsonwebtoken';
 import { AuthenticationService } from '../../../application/services/AuthenticationService';
 import { UserService } from '../../../domain/user/UserService';
 import logger from '../../../utility/shared/logger';
+import { User } from '../../../domain/user';
+
+// Extend the Express Request type to include a user property
+declare global {
+  namespace Express {
+    interface Request {
+      user?: User; // Replace 'any' with your User type
+    }
+  }
+}
 
 
 
@@ -39,6 +49,8 @@ export class AuthMiddleware {
 
       // Attach the user to the request object for use in subsequent middleware or route handlers
       req.user = user;
+      // req.user = (req as Request & { user?: User }).user
+  
 
       next();
     } catch (error) {

@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import { inject, injectable } from 'tsyringe';
 import { AuthenticationService } from '../../../application/services/AuthenticationService';
 import { UserService } from '../../../domain/user/UserService';
+import { User } from '../../../domain/user';
 
 @injectable()
 export class AuthenticationController {
@@ -58,7 +59,8 @@ export class AuthenticationController {
 
   async changePassword(req: Request, res: Response): Promise<void> {
     try {
-      const userId = req.user?.getId(); // Assuming the user ID is attached to the request by a middleware
+      // const userId = req.user?.getId(); // Assuming the user ID is attached to the request by a middleware
+      const userId = (req as Request & { user?: User }).user?.getId();
       if (!userId) {
         res.status(400).json({ message: 'User ID is missing' });
         return;
@@ -73,7 +75,8 @@ export class AuthenticationController {
 
   async getUserProfile(req: Request, res: Response): Promise<void> {
     try {
-      const userId = req.user?.getId(); // Assuming the user ID is attached to the request by a middleware
+      // const userId = req.user?.getId(); // Assuming the user ID is attached to the request by a middleware
+      const userId = (req as Request & { user?: User }).user?.getId();
       if (!userId) {
         res.status(400).json({ message: 'User ID is missing' });
         return;
