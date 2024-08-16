@@ -7,3 +7,4 @@ coverage
 logs
 dist
 ref.ts
+*.pdf

@@ -775,8 +775,6 @@ CMD ["npm", "start"]
 - Sanitize user inputs to prevent injection attacks.
 - Keep dependencies up-to-date to avoid known vulnerabilities.
 
-[Previous content remains unchanged...]
-
 ## 15. Scalability Approach
 
 Our application is designed with scalability in mind, allowing it to handle increased load and grow with user demand. Key scalability features include:
