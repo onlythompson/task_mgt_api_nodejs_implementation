@@ -6,6 +6,7 @@
  * @module UserService
  */
 
+import { inject, injectable } from 'tsyringe';
 import { User } from './User';
 import { UserRepository } from './UserRepository';
 import UserUpdateParams from './UserUpdateParams';
@@ -15,8 +16,9 @@ import UserUpdateParams from './UserUpdateParams';
  * 
  * @class UserService
  */
+@injectable()
 export class UserService {
-  constructor(private userRepository: UserRepository) {}
+  constructor(@inject("UserRepository")private userRepository: UserRepository) {}
 
   /**
    * Creates a new user.

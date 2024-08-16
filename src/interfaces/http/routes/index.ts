@@ -1,14 +1,20 @@
 import express from 'express';
 import { container } from '../../../container';
 import { createAuthMiddleware } from '../middlewares/authMiddleware';
+import { AuthenticationController } from '../controllers/AuthenticationController';
+import { TaskController } from '../controllers/TaskController';
+import createTaskRoutes from './taskRoutes';
+import createAuthRoutes from './authRoutes';
 
-import taskRoutes from './taskRoutes';
-import authRoutes from './authRoutes';
 
 const router = express.Router();
 
 const authMiddleware = createAuthMiddleware(container);
 
-router.use('/api', authRoutes);
-// router.use('/api/task', taskRoutes);
+const authController = container.resolve(AuthenticationController);
+const taskController = container.resolve(TaskController);
+
+router.use('/auth', createAuthRoutes(authController));
+router.use('/task', authMiddleware, createTaskRoutes(taskController));
+
 export default router;

@@ -29,7 +29,7 @@ export class TaskService {
    */
   constructor(
     @inject('TaskRepository') private taskRepository: TaskRepository,
-    @inject('TaskFactory') private taskFactory: TaskFactory
+    @inject(TaskFactory) private taskFactory: TaskFactory
   ) { }
 
   /**

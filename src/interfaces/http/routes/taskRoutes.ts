@@ -6,9 +6,8 @@ import { taskValidations } from '../validations/taskValidations';
 
 
 
-const router = Router();
-const taskController = container.resolve(TaskController);
-
+export default function createTaskRoutes(taskController: TaskController): Router {
+  const router = Router();
   /**
    * @swagger
    * components:
@@ -347,6 +346,7 @@ const taskController = container.resolve(TaskController);
       
   );
 
-export default router;
+return router;
+}
 
 

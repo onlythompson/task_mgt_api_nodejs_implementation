@@ -29,7 +29,7 @@ class Server {
     this.app.use(helmet());
 
     // CORS middleware
-    // this.app.use(corsMiddleware);
+    this.app.use(corsMiddleware);
 
     // Body parsing middleware
     this.app.use(express.json());
@@ -72,7 +72,7 @@ class Server {
     const retryConnection = async () => {
       try {
         // Connect to database
-        // await mongoPersistenceConnection.connect();
+        await mongoPersistenceConnection.connect();
 
         // Seed the database
         // await mongoPersistenceConnection.seedDatabase();

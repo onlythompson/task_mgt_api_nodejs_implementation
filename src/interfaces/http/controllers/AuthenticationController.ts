@@ -14,6 +14,7 @@ export class AuthenticationController {
   async register(req: Request, res: Response): Promise<void> {
     try {
       const { username, email, password } = req.body;
+      console.log(req.body)
       const user = await this.authService.register(username, email, password);
       res.status(201).json({ message: 'User registered successfully', userId: user.getId() });
     } catch (error) {
@@ -25,6 +26,7 @@ export class AuthenticationController {
     try {
       const { email, password } = req.body;
       const token = await this.authService.login(email, password);
+      console.log(req.body)
       res.json({ token });
     } catch (error) {
       res.status(401).json({ message: 'Authentication failed', error: error });

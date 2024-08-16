@@ -19,8 +19,7 @@ export class AuthenticationService {
    * @param {UserService} userService - The user service for user-related operations.
    * @param {AuthConfig} config - Configuration for authentication operations.
    */
-  constructor(@inject(UserService) private userService: UserService) 
-  {}
+  constructor(@inject(UserService) private userService: UserService) { }
 
   /**
    * Authenticates a user and generates a JWT token.
@@ -58,8 +57,10 @@ export class AuthenticationService {
    * @throws {Error} If registration fails.
    */
   async register(username: string, email: string, password: string): Promise<User> {
+    console.log("Processing user registration")
     const hashedPassword = await this.hashPassword(password);
-    return this.userService.createUser(username, email, hashedPassword);
+    console.log(hashedPassword)
+    return await this.userService.createUser(username, email, hashedPassword);
   }
 
   /**
@@ -104,9 +105,17 @@ export class AuthenticationService {
    * @returns {Promise<string>} A promise that resolves to the hashed password.
    */
   private async hashPassword(password: string): Promise<string> {
-    return bcrypt.hash(password, APP_CONFIG.bcryptSaltRounds);
+    try {
+      const saltRounds = Number(APP_CONFIG.bcryptSaltRounds);
+      if (isNaN(saltRounds)) {
+        throw new Error('Invalid salt rounds configuration');
+      }
+      return await bcrypt.hash(password, saltRounds);
+    } catch (error) {
+      console.error('Error hashing password:', error);
+      throw new Error('Failed to hash password');
+    }
   }
-
   /**
    * Verifies a password against a hash.
    * 
@@ -115,7 +124,12 @@ export class AuthenticationService {
    * @returns {Promise<boolean>} A promise that resolves to true if the password is valid, false otherwise.
    */
   private async verifyPassword(password: string, hash: string): Promise<boolean> {
-    return bcrypt.compare(password, hash);
+    try {
+      return await bcrypt.compare(password, hash);
+    } catch (error) {
+      console.error('Error verifying password:', error);
+      throw new Error('Failed to verify password');
+    }
   }
 
   /**

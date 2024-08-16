@@ -41,8 +41,8 @@ import { validate } from '../middlewares/validationMiddleware';
  *       bearerFormat: JWT
  */
 
-const router = express.Router();
-const authController = container.resolve(AuthenticationController);
+export default function createAuthRoutes(authController: AuthenticationController): express.Router {
+  const router = express.Router();
 
   /**
    * @openapi
@@ -222,4 +222,5 @@ const authController = container.resolve(AuthenticationController);
    */
   router.get('/profile', (req, res) => authController.getUserProfile(req, res));
 
-export default router;
+return router;
+}
